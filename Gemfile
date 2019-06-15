@@ -22,6 +22,15 @@ gem 'jsonapi-rails'
 # API documentation generator
 gem 'apipie-rails'
 
+# Video processing
+gem 'streamio-ffmpeg'
+
+# Video storage
+gem 'shrine-mongoid'
+
+# Background processing
+gem 'sidekiq'
+
 group :development, :test do
   gem 'awesome_print'
   gem 'factory_bot_rails'
@@ -47,5 +56,6 @@ group :test do
   gem 'pronto-rails_best_practices', require: false
   gem 'pronto-rails_schema', require: false
   gem 'pronto-rubocop', require: false
+  gem 'shrine-memory'
   gem 'simplecov', require: false
 end
