@@ -11,6 +11,17 @@ gem 'rack-cors'
 gem 'rails'
 gem 'tzinfo-data'
 
+# Trailblazer bundle
+gem 'dry-types'
+gem 'dry-validation', '0.11.1'
+gem 'trailblazer-rails'
+
+# Serializer
+gem 'jsonapi-rails'
+
+# API documentation generator
+gem 'apipie-rails'
+
 group :development, :test do
   gem 'awesome_print'
   gem 'factory_bot_rails'
@@ -28,6 +39,8 @@ group :development do
 end
 
 group :test do
+  gem 'json-schema'
+  gem 'mongoid-rspec'
   gem 'pronto', require: false
   gem 'pronto-brakeman', require: false
   gem 'pronto-fasterer', require: false
