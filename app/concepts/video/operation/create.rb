@@ -8,7 +8,12 @@ class Video::Create < Trailblazer::Operation
   step :file_valid?
   failure :add_errors!
 
-  step :save!
+  step Contract::Build(constant: Video::Contract::Trim)
+  step Contract::Validate(), fail_fast: true
+
+  step :save_source_video!
+
+  step Nested(proc { Video::Trim })
 
   def model!(ctx, current_user:, **)
     ctx[:model] = current_user.videos.new
@@ -22,7 +27,7 @@ class Video::Create < Trailblazer::Operation
     model.errors[:source_video].each { |message| ctx['contract.default'].errors.add(:source_file, message) }
   end
 
-  def save!(_ctx, model:, **)
+  def save_source_video!(_ctx, model:, **)
     model.save
   end
 end

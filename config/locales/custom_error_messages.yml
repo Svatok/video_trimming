@@ -1,0 +1,3 @@
+en:
+  errors:
+    valid_trim_start?: trim_start param is not valid

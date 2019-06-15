@@ -20,10 +20,17 @@ RSpec.describe 'Videos', type: :request do
 
     describe 'Success' do
       let(:params) do
-        { source_video: fixture_file_upload('files/test_video.mp4', 'video/mp4') }
+        {
+          source_video: fixture_file_upload('files/test_video.mp4', 'video/mp4'),
+          trim_start: 0,
+          trim_duration: 5
+        }
       end
 
       before do
+        allow_any_instance_of(VideoUploader::UploadedFile).to receive(:url)
+          .and_return(Rails.root.join('spec', 'fixtures', 'files', 'test_video.mp4').to_s)
+
         post api_v1_videos_path, params: params, headers: authorization_header
       end
 
