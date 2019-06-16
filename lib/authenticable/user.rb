@@ -5,8 +5,8 @@ module Authenticable::User
 
   def authenticate_user!
     @current_user = User.find(authorization_id)
-  rescue ActiveRecord::RecordNotFound
-    head :unauthorized unless current_user
+  rescue Mongoid::Errors::InvalidFind, Mongoid::Errors::DocumentNotFound
+    head :unauthorized
   end
 
   def authorization_id

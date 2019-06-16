@@ -4,17 +4,29 @@ RSpec.describe 'Videos', type: :request do
 
   describe 'POST #create' do
     describe 'Failure' do
-      let(:params) do
-        { source_video: nil }
+      context 'unauthenticated' do
+        before do
+          post api_v1_videos_path
+        end
+
+        it 'renders errors', :show_in_doc do
+          expect(response).to be_unauthorized
+        end
       end
 
-      before do
-        post api_v1_videos_path, params: params, headers: authorization_header
-      end
+      context 'wrong params' do
+        let(:params) do
+          { source_video: nil }
+        end
 
-      it 'renders errors', :show_in_doc do
-        expect(response).to be_unprocessable
-        expect(response).to match_schema('v1/errors')
+        before do
+          post api_v1_videos_path, params: params, headers: authorization_header
+        end
+
+        it 'renders errors', :show_in_doc do
+          expect(response).to be_unprocessable
+          expect(response).to match_schema('v1/errors')
+        end
       end
     end
 
@@ -29,9 +41,6 @@ RSpec.describe 'Videos', type: :request do
       end
 
       before do
-        allow_any_instance_of(VideoUploader::UploadedFile).to receive(:url)
-          .and_return(Rails.root.join('spec', 'fixtures', 'files', 'test_video.mp4').to_s)
-
         post api_v1_videos_path, params: params, headers: authorization_header
       end
 
