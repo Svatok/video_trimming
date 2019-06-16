@@ -3,6 +3,12 @@ module Api
     class VideosController < UserAuthenticationController
       include ::Api::V1::VideosDoc
 
+      def index
+        result = run Video::Index
+
+        render json: result[:serialized_model].to_json
+      end
+
       def create
         result = run ::Video::Create
 

@@ -1,0 +1,90 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft/schema#",
+  "$id": "http://example.com/root.json",
+  "type": "object",
+  "title": "The Root Schema",
+  "required": [
+    "data"
+  ],
+  "properties": {
+    "data": {
+      "$id": "#/properties/data",
+      "type": "array",
+      "title": "The Data Schema",
+      "items": {
+        "$id": "#/properties/data/items",
+        "type": "object",
+        "title": "The Items Schema",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "$id": "#/properties/data/items/properties/id",
+            "type": "string",
+            "title": "The Id Schema",
+            "default": "",
+            "examples": [
+              "5d0599602cdb315bf7e74a2f"
+            ],
+            "pattern": "^(.*)$"
+          },
+          "type": {
+            "$id": "#/properties/data/items/properties/type",
+            "type": "string",
+            "title": "The Type Schema",
+            "default": "",
+            "examples": [
+              "videos"
+            ],
+            "pattern": "^(.*)$"
+          },
+          "attributes": {
+            "$id": "#/properties/data/items/properties/attributes",
+            "type": "object",
+            "title": "The Attributes Schema",
+            "required": [
+              "name",
+              "url",
+              "duration"
+            ],
+            "properties": {
+              "name": {
+                "$id": "#/properties/data/items/properties/attributes/properties/name",
+                "type": "string",
+                "title": "The Name Schema",
+                "default": "",
+                "examples": [
+                  "Alfreda Boyle"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "url": {
+                "$id": "#/properties/data/items/properties/attributes/properties/url",
+                "type": "string",
+                "title": "The Url Schema",
+                "default": "",
+                "examples": [
+                  "memory://09952b021c11b128f1fe150e1f3b7572.mp4"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "duration": {
+                "$id": "#/properties/data/items/properties/attributes/properties/duration",
+                "type": "number",
+                "title": "The Duration Schema",
+                "default": 0.0,
+                "examples": [
+                  23.903333
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
