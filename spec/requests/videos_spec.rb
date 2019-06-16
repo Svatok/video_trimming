@@ -50,4 +50,31 @@ RSpec.describe 'Videos', type: :request do
       end
     end
   end
+
+  describe 'GET #index' do
+    describe 'Failure' do
+      context 'unauthenticated' do
+        before do
+          get api_v1_requests_path, headers: { Authorization: 'Bearer test' }
+        end
+
+        it 'renders errors' do
+          expect(response).to be_unauthorized
+        end
+      end
+    end
+
+    describe 'Success' do
+      let!(:videos) { create_list :video, 2, :with_result_video, user: user }
+
+      before do
+        get api_v1_videos_path, headers: authorization_header
+      end
+
+      it 'returns videos' do
+        expect(response).to be_ok
+        expect(response).to match_schema('v1/videos/index')
+      end
+    end
+  end
 end
