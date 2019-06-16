@@ -7,7 +7,10 @@ module Api
 
       header 'Authorization', 'Bearer authorization_id', required: true
 
+      param :name, String, required: true
       param :source_video, File, required: true
+      param :trim_start, :number, required: true
+      param :trim_duration, :number, required: true
 
       def create; end
     end
