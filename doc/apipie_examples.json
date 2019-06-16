@@ -10,14 +10,41 @@
       "request_data": null,
       "response_data": {
         "data": {
-          "id": "5d04df112cdb315e3825a31b",
+          "id": "5d054f3d2cdb315bdb0c576c",
           "type": "users",
           "attributes": {
-            "identificator": "5d04df112cdb315e3825a31b"
+            "identificator": "5d054f3d2cdb315bdb0c576c"
           }
         }
       },
       "code": 200,
+      "show_in_doc": 1,
+      "recorded": true
+    }
+  ],
+  "api -> v1 -> videos#create": [
+    {
+      "verb": "POST",
+      "path": "/api/v1/videos",
+      "versions": [
+        "v1"
+      ],
+      "query": null,
+      "request_data": "source_video",
+      "response_data": {
+        "errors": [
+          {
+            "detail": "must be filled",
+            "source": {
+              "pointer": "/data/attributes/source-video"
+            }
+          }
+        ],
+        "jsonapi": {
+          "version": "1.0"
+        }
+      },
+      "code": 422,
       "show_in_doc": 1,
       "recorded": true
     }

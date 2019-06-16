@@ -23,3 +23,6 @@
 
 # Ignore spec files
 /spec/examples.txt
+
+# Ignore uploads
+/public/uploads

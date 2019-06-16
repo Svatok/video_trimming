@@ -1,6 +1,6 @@
 module Api
   module V1
-    class UsersController < ::Api::V1::BaseController
+    class UsersController < BaseController
       include ::Api::V1::UsersDoc
 
       def create
