@@ -1,6 +1,6 @@
 module Api
   module V1
-    class BaseController < ::ActionController::API
+    class BaseController < ::ApplicationController
       include ::Authenticable::User
       include Trailblazer::Rails::Controller
 

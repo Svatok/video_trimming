@@ -2,4 +2,4 @@
 :logfile: ./log/sidekiq.log
 :concurrency: 3
 :queues:
-  - carrierwave
+  - video_trimming

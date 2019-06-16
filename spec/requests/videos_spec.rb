@@ -21,6 +21,7 @@ RSpec.describe 'Videos', type: :request do
     describe 'Success' do
       let(:params) do
         {
+          name: FFaker::Name.name,
           source_video: fixture_file_upload('files/test_video.mp4', 'video/mp4'),
           trim_start: 0,
           trim_duration: 5

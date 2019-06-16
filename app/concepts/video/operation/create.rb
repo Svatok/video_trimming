@@ -13,7 +13,8 @@ class Video::Create < Trailblazer::Operation
 
   step :save_source_video!
 
-  step Nested(proc { Video::Trim })
+  step :create_request!
+  step :trim_video!
 
   def model!(ctx, current_user:, **)
     ctx[:model] = current_user.videos.new
@@ -29,5 +30,18 @@ class Video::Create < Trailblazer::Operation
 
   def save_source_video!(_ctx, model:, **)
     model.save
+  end
+
+  def create_request!(ctx, model:, current_user:, **)
+    params = {
+      video: model,
+      trim_start: ctx['contract.default'].trim_start,
+      trim_duration: ctx['contract.default'].trim_duration
+    }
+    ctx[:request] = current_user.requests.create(params)
+  end
+
+  def trim_video!(_ctx, request:, **)
+    VideoTrimmingJob.perform_later(request_id: request.id.to_s)
   end
 end

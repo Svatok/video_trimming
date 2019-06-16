@@ -8,4 +8,5 @@ class Video
   field :result_video_data, type: String
 
   belongs_to :user
+  has_many :requests, dependent: :destroy
 end

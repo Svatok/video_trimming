@@ -1,4 +1,6 @@
 class Video::Trim < Trailblazer::Operation
+  step :request!, fail_fast: true
+  step :start_request_processing!
   step :video!
 
   success :tmp_folder_path!
@@ -6,13 +8,24 @@ class Video::Trim < Trailblazer::Operation
 
   step :trim_options!
 
-  step :trim_video!
-  step :save_trimed_video!
+  step Rescue(FFMPEG::Error, handler: :log_error!) {
+    step :trim_video!
+    step :save_trimed_video!
+  }, Output(:failure) => :stop_request_processing!
 
-  step :remove_tmp_file!
+  step :stop_request_processing!
+  success :remove_tmp_file!
 
-  def video!(ctx, model:, **)
-    ctx[:video] = model.source_video
+  def request!(ctx, request_id:, **)
+    ctx[:request] = Request.where(id: request_id).first
+  end
+
+  def start_request_processing!(_ctx, request:, **)
+    request.update(status: Request::STATUSES[:processing])
+  end
+
+  def video!(ctx, request:, **)
+    ctx[:video] = request.video
   end
 
   def tmp_folder_path!(ctx, **)
@@ -21,21 +34,29 @@ class Video::Trim < Trailblazer::Operation
   end
 
   def tmp_path!(ctx, video:, tmp_folder_path:, **)
-    ctx[:tmp_path] = "#{tmp_folder_path}#{video.metadata['filename']}"
+    ctx[:tmp_path] = "#{tmp_folder_path}#{video.source_video.metadata['filename']}"
   end
 
-  def trim_options!(ctx, **)
-    contract = ctx['contract.default']
-    ctx[:trim_options] = ['-ss', contract.trim_start.to_s, '-t', contract.trim_duration.to_s]
+  def trim_options!(ctx, request:, **)
+    ctx[:trim_options] = ['-ss', request.trim_start.to_s, '-t', request.trim_duration.to_s]
   end
 
   def trim_video!(_ctx, video:, tmp_path:, trim_options:, **)
-    trimed_video = FFMPEG::Movie.new(video.url)
+    trimed_video = FFMPEG::Movie.new(video.source_video.url)
     trimed_video.transcode(tmp_path, trim_options)
   end
 
-  def save_trimed_video!(_ctx, model:, tmp_path:, **)
-    model.update(result_video: File.open(tmp_path, 'r'))
+  def log_error!(exception, (ctx), *)
+    ctx[:request].error = exception.message
+  end
+
+  def save_trimed_video!(_ctx, video:, tmp_path:, **)
+    video.update(result_video: File.open(tmp_path, 'r'))
+  end
+
+  def stop_request_processing!(_ctx, request:, **)
+    status = request.error.present? ? Request::STATUSES[:failed] : Request::STATUSES[:done]
+    request.update(status: status)
   end
 
   def remove_tmp_file!(_ctx, tmp_folder_path:, **)

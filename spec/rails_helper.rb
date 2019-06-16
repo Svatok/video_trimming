@@ -28,6 +28,11 @@ RSpec.configure do |config|
     Mongoid.default_client.collections.reject { |c| c.name =~ /system/ }.each(&:drop)
   end
 
+  config.after(:each) do
+    ActiveJob::Base.queue_adapter.enqueued_jobs = []
+    ActiveJob::Base.queue_adapter.performed_jobs = []
+  end
+
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
 
