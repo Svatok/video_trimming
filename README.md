@@ -1,24 +1,20 @@
-# README
+# Video trimming
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Api for video trimming.
 
-Things you may want to cover:
+[Api documentation](https://shrouded-eyrie-67421.herokuapp.com/apipie)
 
-* Ruby version
+Api server https://shrouded-eyrie-67421.herokuapp.com
 
-* System dependencies
+## Tech Stack
 
-* Configuration
+* ruby-2.6.3
+* Rails 5
+* Trailblazer 2.1
+* MongoDB
 
-* Database creation
+## Setup Project
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Prerequisites: mongoDB, redis, ffmpeg
+* Start sidekiq `bundle exec sidekiq -C config/sidekiq.yml`
+* Start server `rails s`
