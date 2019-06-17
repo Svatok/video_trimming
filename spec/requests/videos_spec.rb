@@ -51,7 +51,7 @@ RSpec.describe 'Videos', type: :request do
     end
   end
 
-  describe 'GET #index' do
+  describe 'GET #index', :show_in_doc do
     describe 'Failure' do
       context 'unauthenticated' do
         before do

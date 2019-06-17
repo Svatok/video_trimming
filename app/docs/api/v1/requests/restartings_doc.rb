@@ -6,7 +6,7 @@ module Api
 
         api :POST, '/v1/requests/:request_id/restarting', 'Restart failed request'
 
-        header 'Authorization', 'Bearer authorization_id', required: true
+        header 'Authorization', 'Bearer identificator', required: true
 
         def create; end
       end

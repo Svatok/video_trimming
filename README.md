@@ -6,7 +6,7 @@ Api for video trimming.
 
 Api server https://shrouded-eyrie-67421.herokuapp.com
 
-## Tech Stack
+## Built With
 
 * ruby-2.6.3
 * Rails 5
@@ -16,5 +16,17 @@ Api server https://shrouded-eyrie-67421.herokuapp.com
 ## Setup Project
 
 * Prerequisites: mongoDB, redis, ffmpeg
-* Start sidekiq `bundle exec sidekiq -C config/sidekiq.yml`
-* Start server `rails s`
+* Start sidekiq:
+```
+  bundle exec sidekiq -C config/sidekiq.yml
+```
+
+* Start server:
+```
+  rails s
+```
+
+## Running tests
+```
+  rspec
+```
