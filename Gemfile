@@ -26,6 +26,7 @@ gem 'apipie-rails'
 gem 'streamio-ffmpeg'
 
 # Video storage
+gem 'aws-sdk-s3'
 gem 'shrine-mongoid'
 
 # Background processing

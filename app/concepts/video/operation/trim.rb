@@ -8,13 +8,14 @@ class Video::Trim < Trailblazer::Operation
 
   step :trim_options!
 
-  step Rescue(FFMPEG::Error, Errno::ENOENT, handler: :log_error!) {
+  step Rescue(FFMPEG::Error, SourceVideoExistingError, handler: :log_error!) {
+    step :source_video!
     step :trim_video!
     step :save_trimed_video!
   }, Output(:failure) => :stop_request_processing!
 
   step :stop_request_processing!
-  success :remove_tmp_file!
+  success :remove_tmp_files!
 
   def request!(ctx, request_id:, **)
     ctx[:request] = Request.where(id: request_id).first
@@ -41,8 +42,14 @@ class Video::Trim < Trailblazer::Operation
     ctx[:trim_options] = ['-ss', request.trim_start.to_s, '-t', request.trim_duration.to_s]
   end
 
-  def trim_video!(_ctx, video:, tmp_path:, trim_options:, **)
-    trimed_video = FFMPEG::Movie.new(video.source_video.url)
+  def source_video!(ctx, video:, **)
+    raise SourceVideoExistingError unless video.source_video.exists?
+
+    ctx[:source_video] = video.source_video.download
+  end
+
+  def trim_video!(_ctx, source_video:, tmp_path:, trim_options:, **)
+    trimed_video = FFMPEG::Movie.new(source_video.path)
     trimed_video.transcode(tmp_path, trim_options)
   end
 
@@ -59,7 +66,8 @@ class Video::Trim < Trailblazer::Operation
     request.update(status: status)
   end
 
-  def remove_tmp_file!(_ctx, tmp_folder_path:, **)
+  def remove_tmp_files!(ctx, tmp_folder_path:, **)
+    File.delete(ctx[:source_video].path) if ctx[:source_video].present? && File.exist?(ctx[:source_video].path)
     FileUtils.rm_rf(tmp_folder_path) if Dir.exist?(tmp_folder_path)
   end
 end

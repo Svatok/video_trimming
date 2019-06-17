@@ -1,3 +1,4 @@
 en:
   errors:
     valid_trim_start?: trim_start param is not valid
+    source_video_not_exists: source video does not exist

@@ -1,6 +1,5 @@
 require 'shrine'
 require 'shrine/storage/file_system'
-require 'shrine/storage/memory'
 
 Shrine.plugin :mongoid
 
@@ -9,6 +8,7 @@ if ENV['RAILS_ENV'] == 'development'
     cache: Shrine::Storage::FileSystem.new('public', prefix: 'uploads/cache'),
     store: Shrine::Storage::FileSystem.new('public', prefix: 'uploads')
   }
+  Shrine.plugin :default_url_options, store: { host: 'http://localhost:3000' }
 end
 
 if ENV['RAILS_ENV'] == 'test'
