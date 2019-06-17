@@ -8,7 +8,7 @@ class Video::Trim < Trailblazer::Operation
 
   step :trim_options!
 
-  step Rescue(FFMPEG::Error, handler: :log_error!) {
+  step Rescue(FFMPEG::Error, Errno::ENOENT, handler: :log_error!) {
     step :trim_video!
     step :save_trimed_video!
   }, Output(:failure) => :stop_request_processing!

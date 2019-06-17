@@ -4,12 +4,12 @@ RSpec.describe Video::Trim do
   let(:user) { create :user }
   let(:video) { create :video, :with_source_video, user: user }
   let(:request) { create :request, video: video, user: user }
+  let(:video_path) { Rails.root.join('spec', 'fixtures', 'files', 'test_video.mp4').to_s }
 
   subject { described_class.call(request_id: request_id) }
 
   before do
-    allow_any_instance_of(VideoUploader::UploadedFile).to receive(:url)
-      .and_return(Rails.root.join('spec', 'fixtures', 'files', 'test_video.mp4').to_s)
+    allow_any_instance_of(VideoUploader::UploadedFile).to receive(:url).and_return(video_path)
   end
 
   describe 'Failure' do
@@ -31,6 +31,21 @@ RSpec.describe Video::Trim do
       it 'log error and update status' do
         expect { subject }.to change { request.reload.status }
           .from(Request::STATUSES[:scheduled]).to(Request::STATUSES[:failed])
+          .and(not_change { video.reload.result_video_url })
+        expect(Dir.exist?(subject[:tmp_folder_path])).to be_falsey
+        expect(subject).to be_success
+      end
+    end
+
+    context 'file not present' do
+      let(:request_id) { request.id.to_s }
+      let(:video_path) { Rails.root.join('spec', 'fixtures', 'files', 'not_exist.mp4').to_s }
+
+      it 'log error and update status' do
+        expect { subject }.to change { request.reload.status }
+          .from(Request::STATUSES[:scheduled]).to(Request::STATUSES[:failed])
+          .and change { request.reload.error }
+          .from(nil).to(be_kind_of(String))
           .and(not_change { video.reload.result_video_url })
         expect(Dir.exist?(subject[:tmp_folder_path])).to be_falsey
         expect(subject).to be_success
