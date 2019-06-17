@@ -1,0 +1,232 @@
+{
+  "api -> v1 -> requests -> restartings#create": [
+    {
+      "verb": "POST",
+      "path": "/api/v1/requests/5d07adc12cdb31324cb3a4c6/restarting",
+      "versions": [
+        "v1"
+      ],
+      "query": null,
+      "request_data": null,
+      "response_data": null,
+      "code": 201,
+      "show_in_doc": 1,
+      "recorded": true
+    },
+    {
+      "verb": "POST",
+      "path": "/api/v1/requests/test/restarting",
+      "versions": [
+        "v1"
+      ],
+      "query": null,
+      "request_data": null,
+      "response_data": null,
+      "code": 404,
+      "show_in_doc": 1,
+      "recorded": true
+    },
+    {
+      "verb": "POST",
+      "path": "/api/v1/requests/request_id/restarting",
+      "versions": [
+        "v1"
+      ],
+      "query": null,
+      "request_data": null,
+      "response_data": null,
+      "code": 401,
+      "show_in_doc": 1,
+      "recorded": true
+    }
+  ],
+  "api -> v1 -> requests#index": [
+    {
+      "verb": "GET",
+      "path": "/api/v1/requests",
+      "versions": [
+        "v1"
+      ],
+      "query": null,
+      "request_data": null,
+      "response_data": null,
+      "code": 401,
+      "show_in_doc": 1,
+      "recorded": true
+    },
+    {
+      "verb": "GET",
+      "path": "/api/v1/requests",
+      "versions": [
+        "v1"
+      ],
+      "query": null,
+      "request_data": null,
+      "response_data": {
+        "data": [
+          {
+            "id": "5d07adc02cdb31324cb3a4c1",
+            "type": "requests",
+            "attributes": {
+              "created-at": "2019-06-17T15:12:00.894Z",
+              "status": "scheduled"
+            }
+          },
+          {
+            "id": "5d07adc02cdb31324cb3a4c3",
+            "type": "requests",
+            "attributes": {
+              "created-at": "2019-06-17T15:12:00.940Z",
+              "status": "failed"
+            }
+          }
+        ]
+      },
+      "code": 200,
+      "show_in_doc": 1,
+      "recorded": true
+    },
+    {
+      "verb": "GET",
+      "path": "/api/v1/requests",
+      "versions": [
+        "v1"
+      ],
+      "query": null,
+      "request_data": null,
+      "response_data": null,
+      "code": 401,
+      "show_in_doc": 1,
+      "recorded": true
+    }
+  ],
+  "api -> v1 -> users#create": [
+    {
+      "verb": "POST",
+      "path": "/api/v1/users",
+      "versions": [
+        "v1"
+      ],
+      "query": null,
+      "request_data": null,
+      "response_data": {
+        "data": {
+          "id": "5d07adc02cdb31324cb3a4be",
+          "type": "users",
+          "attributes": {
+            "identificator": "5d07adc02cdb31324cb3a4be"
+          }
+        }
+      },
+      "code": 200,
+      "show_in_doc": 1,
+      "recorded": true
+    }
+  ],
+  "api -> v1 -> videos#create": [
+    {
+      "verb": "POST",
+      "path": "/api/v1/videos",
+      "versions": [
+        "v1"
+      ],
+      "query": null,
+      "request_data": null,
+      "response_data": null,
+      "code": 401,
+      "show_in_doc": 1,
+      "recorded": true
+    },
+    {
+      "verb": "POST",
+      "path": "/api/v1/videos",
+      "versions": [
+        "v1"
+      ],
+      "query": null,
+      "request_data": "source_video",
+      "response_data": {
+        "errors": [
+          {
+            "detail": "must be filled",
+            "source": {
+              "pointer": "/data/attributes/name"
+            }
+          },
+          {
+            "detail": "must be filled",
+            "source": {
+              "pointer": "/data/attributes/source-video"
+            }
+          },
+          {
+            "detail": "must be filled",
+            "source": {
+              "pointer": "/data/attributes/trim-start"
+            }
+          },
+          {
+            "detail": "must be greater than or equal to 0",
+            "source": {
+              "pointer": "/data/attributes/trim-start"
+            }
+          },
+          {
+            "detail": "must be filled",
+            "source": {
+              "pointer": "/data/attributes/trim-duration"
+            }
+          },
+          {
+            "detail": "must be greater than 0",
+            "source": {
+              "pointer": "/data/attributes/trim-duration"
+            }
+          }
+        ],
+        "jsonapi": {
+          "version": "1.0"
+        }
+      },
+      "code": 422,
+      "show_in_doc": 1,
+      "recorded": true
+    }
+  ],
+  "api -> v1 -> videos#index": [
+    {
+      "verb": "GET",
+      "path": "/api/v1/videos",
+      "versions": [
+        "v1"
+      ],
+      "query": null,
+      "request_data": null,
+      "response_data": {
+        "data": [
+          {
+            "id": "5d07adc12cdb31324cb3a4ca",
+            "type": "videos",
+            "attributes": {
+              "name": "Alena Jacobs",
+              "url": "memory://c6295bc26d36a977e68011f02a749176.mp4",
+              "duration": 23.903333
+            }
+          },
+          {
+            "id": "5d07adc12cdb31324cb3a4cb",
+            "type": "videos",
+            "attributes": {
+              "name": "Jimmy Kertzmann",
+              "url": "memory://4eace21bcc07dd5b210967905098a7d6.mp4",
+              "duration": 23.903333
+            }
+          }
+        ]
+      },
+      "code": 200,
+      "show_in_doc": 1,
+      "recorded": true
+    }
+  ]
+}

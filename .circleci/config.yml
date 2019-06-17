@@ -1,0 +1,100 @@
+defaults: &defaults
+  working_directory: ~/video_trimming
+
+references:
+  install_cmake: &install_cmake
+    run:
+      name: Installing cmake
+      command: sudo apt-get update && sudo apt-get install cmake
+
+  restore_bundle_cache: &restore_bundle_cache
+    restore_cache:
+      keys:
+        - video_trimming-{{ checksum "Gemfile.lock" }}
+
+  bundle_install: &bundle_install
+    run:
+      name: Installing gems
+      command: bundle install --path vendor/bundle
+
+  save_bundle_cache: &save_bundle_cache
+    save_cache:
+      key: video_trimming-{{ checksum "Gemfile.lock" }}
+      paths:
+        - vendor/bundle
+
+version: 2
+
+jobs:
+  back_end_linters:
+    <<: *defaults
+
+    docker:
+      - image: circleci/ruby:2.6.3
+
+    steps:
+      - checkout
+
+      - <<: *install_cmake
+      - <<: *restore_bundle_cache
+      - <<: *bundle_install
+      - <<: *save_bundle_cache
+
+      - run:
+          name: Running back-end linters
+          command: |
+            bundle exec pronto run --runner=rails_best_practices rails_schema fasterer rubocop brakeman \
+                                   --exit-code  -c origin/develop
+
+
+  back_end_tests:
+    <<: *defaults
+
+    docker:
+      - image: circleci/ruby:2.6.3-node
+        environment:
+          RAILS_ENV: test
+
+      - image: circleci/mongo:latest
+
+    enviromnment:
+      - RAILS_ENV: test
+
+    steps:
+      - checkout
+
+      - <<: *install_cmake
+
+      - run:
+          name: Install system dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y libicu-dev libidn11-dev libprotobuf-dev protobuf-compiler
+            sudo apt-get install ffmpeg
+
+      - <<: *restore_bundle_cache
+      - <<: *bundle_install
+      - <<: *save_bundle_cache
+
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:27017 -timeout 1m
+
+      - run:
+          name: Running back-end tests
+          command: bundle exec rspec
+
+      - store_artifacts:
+          name: Saving Rspec coverage
+          path: ~/video_trimming/coverage
+          destination: /rspec-coverage
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - back_end_linters
+
+      - back_end_tests:
+          requires:
+            - back_end_linters
