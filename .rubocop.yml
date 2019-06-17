@@ -33,3 +33,9 @@ Metrics/BlockLength:
     - 'Rakefile'
     - 'spec/**/*.rb'
     - 'config/routes.rb'
+Naming/MethodName:
+  Exclude:
+    - 'app/concepts/**/lib/macro.rb'
+Style/Lambda:
+  Exclude:
+    - 'app/concepts/**/lib/macro/*.rb'
