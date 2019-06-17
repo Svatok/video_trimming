@@ -1,6 +1,5 @@
 require 'shrine'
 require 'shrine/storage/file_system'
-require 'shrine/storage/memory'
 
 Shrine.plugin :mongoid
 
