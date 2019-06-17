@@ -49,6 +49,22 @@ GEM
     arel (9.0.0)
     ast (2.4.0)
     awesome_print (1.8.0)
+    aws-eventstream (1.0.3)
+    aws-partitions (1.175.0)
+    aws-sdk-core (3.55.0)
+      aws-eventstream (~> 1.0, >= 1.0.2)
+      aws-partitions (~> 1.0)
+      aws-sigv4 (~> 1.1)
+      jmespath (~> 1.0)
+    aws-sdk-kms (1.21.0)
+      aws-sdk-core (~> 3, >= 3.53.0)
+      aws-sigv4 (~> 1.1)
+    aws-sdk-s3 (1.42.0)
+      aws-sdk-core (~> 3, >= 3.53.0)
+      aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.1)
+    aws-sigv4 (1.1.0)
+      aws-eventstream (~> 1.0, >= 1.0.2)
     bootsnap (1.4.4)
       msgpack (~> 1.0)
     brakeman (4.5.1)
@@ -135,6 +151,7 @@ GEM
       concurrent-ruby (~> 1.0)
     inflecto (0.0.2)
     jaro_winkler (1.5.2)
+    jmespath (1.4.0)
     json (2.2.0)
     json-schema (2.8.1)
       addressable (>= 2.4)
@@ -386,6 +403,7 @@ PLATFORMS
 DEPENDENCIES
   apipie-rails
   awesome_print
+  aws-sdk-s3
   bootsnap
   bullet
   dry-types
