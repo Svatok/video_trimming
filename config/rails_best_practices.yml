@@ -1,0 +1,1 @@
+RemoveUnusedMethodsInControllersCheck: { except_methods: ['Api::V1::UserAuthenticationController#_run_options'] }
